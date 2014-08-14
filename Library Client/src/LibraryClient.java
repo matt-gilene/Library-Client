@@ -1,4 +1,8 @@
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.ScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,9 +28,13 @@ public class LibraryClient extends JFrame {
 	private JTable clientTable;
 	private ClientTableModel clientModel;
 	
+	private JTable bookTable;
+	private BookTableModel bookModel;
+	
+	
 	public LibraryClient() {
 		buildMenuBar();
-		buildClientTable();
+		openClientTable();
 		
 		clientModel.addClient(new Client("Matt", 18));
 		
@@ -72,8 +80,39 @@ public class LibraryClient extends JFrame {
 	
 	private void buildClientTable() {
 		clientTable = new JTable();
+		clientTable.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				Point p = e.getPoint();
+				int row = ((JTable) e.getSource()).rowAtPoint(p);
+				if(e.getClickCount() == 2) {
+					openBookTable(clientModel.getClient(row));
+				}
+			}
+		});
 		clientModel = new ClientTableModel();
 		clientTable.setModel(clientModel);
-		add(new JScrollPane(clientTable));
+	}
+	
+	private void buildBookTable(Client c) {
+		bookTable = new JTable();
+		bookModel = new BookTableModel(c);
+		bookTable.setModel(bookModel);
+	}
+	
+	private void openClientTable() {
+		buildClientTable();
+		setTableView(clientTable);
+	}
+	
+	private void openBookTable(Client c) {
+		buildBookTable(c);
+		setTableView(bookTable);
+	}
+	
+	private void setTableView(JTable t) {
+		this.getContentPane().removeAll();
+		this.getContentPane().add(new JScrollPane(t));
+		this.revalidate();
+		this.repaint();
 	}
 }

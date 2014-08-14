@@ -1,10 +1,9 @@
-import java.awt.print.Book;
 import java.util.ArrayList;
 
 
 public class Client {
 	
-	public static final String[] DATA_NAMES = {"Name", "Age"};
+	public static final String[] DATA_NAMES = {"Name", "Age", "# Checked Out"};
 	
 	private String name;
 	private int age;
@@ -19,6 +18,14 @@ public class Client {
 	
 	public Client() {
 		this("", 0);
+	}
+	
+	public int bookCount() {
+		return books.size();
+	}
+	
+	public Book getBook(int i) {
+		return books.get(i);
 	}
 	
 	public Object[] asArray() {

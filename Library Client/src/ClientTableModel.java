@@ -24,6 +24,10 @@ public class ClientTableModel extends AbstractTableModel {
 			this.fireTableDataChanged();
 		}
 	}
+	
+	public Client getClient(int r) {
+		return clients.get(r);
+	}
 
 	@Override
 	public int getRowCount() {
